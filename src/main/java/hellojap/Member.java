@@ -1,9 +1,9 @@
 package hellojap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Member {
@@ -11,30 +11,27 @@ public class Member {
     @Id
     private Long id;
 
-    // 기본생성자가 꼭 있어야함
-    public Member() {
-    }
+    @Column(name = "name", nullable = false)
+    private String username;
 
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private Integer age;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
 
-    public Long getId() {
-        return id;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 
-    public String getName() {
-        return name;
-    }
+    private LocalDate testLocalDate;
+    private LocalDateTime testLocalDateTime;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Lob
+    private String description;
+
+    @Transient // 매핑 X
+    private int temp;
+
 }

@@ -65,6 +65,14 @@ public class JapMain {
             //1. 영속성 컨텍스트를 비우지 않음
             //2. 영속성 컨텍스트의 변경내용을 DB에 동기화
 
+            // 준영속 상태 : 영속성 컨텍스트가 관리하지 않는상태
+            // 준영속 상태로 만드는 방법
+            //1. em.detach(entity);
+            //2. em.clear();
+            //3. em.close();
+
+
+
             
             //tx.commit()시점에 쓰기지연 SQL저장소에서 쿼리가 실행된다.
             tx.commit();

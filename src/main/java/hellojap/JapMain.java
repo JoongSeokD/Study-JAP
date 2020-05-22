@@ -19,13 +19,20 @@ public class JapMain {
 
             //비영속
             Member member = new Member();
-            member.setId(100L);
+            member.setId(101L) ;
             member.setName("HelloJAP2");
 
             //영속 DB 저장 X
             System.out.println("=== BEFORE ===");
             em.persist(member);
             System.out.println("=== AFTER ===");
+
+            // 1차 캐시 DB에서 Select하지 않는다.
+            Member member1 = em.find(Member.class, 101L);
+            System.out.println(member1.getId());
+            System.out.println(member1.getName());
+
+
 
             tx.commit();
         } catch (Exception e){

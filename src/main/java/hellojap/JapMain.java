@@ -1,5 +1,8 @@
 package hellojap;
 
+import jpabook.jpashop.domain.Account;
+import jpabook.jpashop.domain.Order;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -15,11 +18,9 @@ public class JapMain {
         tx.begin();
 
         try {
+            Order order = em.find(Order.class, 1L);
+            Account account = em.find(Account.class, order.getAccountId());
 
-            Member member = new Member();
-            member.setUsername("JoongSeok");
-
-            em.persist(member);
             tx.commit();
         } catch (Exception e){
             tx.rollback();

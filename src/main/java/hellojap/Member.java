@@ -6,12 +6,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-
 public class Member {
 
     @Id
     private Long id;
 
+    // 기본생성자가 꼭 있어야함
+    public Member() {
+    }
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     private String name;
 

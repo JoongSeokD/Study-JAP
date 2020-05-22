@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JapMain {
     public static void main(String[] args) {
@@ -12,17 +13,25 @@ public class JapMain {
         EntityManager em = emf.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
-
         tx.begin();
-        Member member = new Member();
 
-        member.setId(2L);
-        member.setName("helloB");
+        try {
+            List<Member> result = em.createQuery("select m from Member as m ", Member.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10)
+                    .getResultList();
 
-        em.persist(member);
+            for (Member member : result) {
+                System.out.println(member.getName());
+            }
 
-        tx.commit();
-        em.close();
+            tx.commit();
+        } catch (Exception e){
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+
 
         emf.close();
 

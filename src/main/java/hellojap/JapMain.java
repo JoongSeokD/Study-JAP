@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JapMain {
     public static void main(String[] args) {
@@ -33,10 +34,14 @@ public class JapMain {
 
             Account findAccount = em.find(Account.class, acoount.getId());
 
-            Team team1 = findAccount.getTeam();
-            System.out.println(team1);
+            //읽기만 가능 update, insert 불가
+            List<Account> accounts = findAccount.getTeam().getAccounts();
 
-
+            for (Account account : accounts) {
+                System.out.println(acoount.getUsername());
+                Account find = em.find(Account.class, acoount.getId());
+                find.setUsername("account2");
+            }
             tx.commit();
         } catch (Exception e){
             tx.rollback();

@@ -1,6 +1,8 @@
 package jpabook.jpashop.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -14,6 +16,14 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @OneToMany(mappedBy = "account")
+    private List<Order> orders = new ArrayList<>();
+
+
+    private String city;
+    private String street;
+    private String zipcode;
 
 
     //연관관계 편의 메서드

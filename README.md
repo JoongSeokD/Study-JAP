@@ -1,4 +1,4 @@
-# Study-JAP
+# Study-JPA
 
 
 intellij ultimate

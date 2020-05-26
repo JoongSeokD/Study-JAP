@@ -22,9 +22,6 @@ public class Account extends BaseEntity{
     private List<Order> orders = new ArrayList<>();
 
 
-    private String city;
-    private String street;
-    private String zipcode;
 
     //연관관계 편의 메서드
     public void changeTeam(Team team) {

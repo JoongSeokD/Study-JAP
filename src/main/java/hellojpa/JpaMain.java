@@ -1,6 +1,7 @@
 package hellojpa;
 
 import jpabook.jpashop.domain.Account;
+import jpabook.jpashop.domain.Book;
 import jpabook.jpashop.domain.Movie;
 
 import javax.persistence.EntityManager;
@@ -24,6 +25,11 @@ public class JpaMain {
             account.setCreatedBy("kim");
             account.setCreatedDate(LocalDateTime.now());
             em.persist(account);
+
+            Book book = new Book();
+            book.setName("JPA");
+            book.setAuthor("김영한");
+            em.persist(book);
 
             Movie movie = new Movie();
             movie.setDirector("aaaa");

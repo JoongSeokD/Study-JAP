@@ -1,11 +1,12 @@
 package jpabook.jpashop.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Account {
+public class Account extends BaseEntity{
 
     @Id @GeneratedValue
     @Column(name="ACCOUNT_ID")
@@ -24,7 +25,6 @@ public class Account {
     private String city;
     private String street;
     private String zipcode;
-
 
     //연관관계 편의 메서드
     public void changeTeam(Team team) {

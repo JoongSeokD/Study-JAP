@@ -1,12 +1,13 @@
 package hellojpa;
 
-import jpabook.jpashop.domain.*;
+import jpabook.jpashop.domain.Account;
+import jpabook.jpashop.domain.Movie;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -18,6 +19,11 @@ public class JpaMain {
         tx.begin();
 
         try {
+
+            Account account = new Account();
+            account.setCreatedBy("kim");
+            account.setCreatedDate(LocalDateTime.now());
+            em.persist(account);
 
             Movie movie = new Movie();
             movie.setDirector("aaaa");

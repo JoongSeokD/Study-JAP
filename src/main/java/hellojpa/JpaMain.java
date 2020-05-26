@@ -1,9 +1,6 @@
 package hellojpa;
 
-import jpabook.jpashop.domain.Account;
-import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderItem;
-import jpabook.jpashop.domain.Team;
+import jpabook.jpashop.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,6 +18,19 @@ public class JpaMain {
         tx.begin();
 
         try {
+
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함계사라지다");
+            movie.setPrice(10000);
+            em.persist(movie);
+
+            em.flush();
+            em.clear();
+
+            Movie movie1 = em.find(Movie.class, movie.getId());
+
 
             tx.commit();
         } catch (Exception e){

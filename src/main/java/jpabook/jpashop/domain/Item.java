@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
 public class Item {
     @Id @GeneratedValue
     @Column(name="ITEM_ID")
@@ -26,6 +28,14 @@ public class Item {
 
     public String getName() {
         return name;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public void setName(String name) {

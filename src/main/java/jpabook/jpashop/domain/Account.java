@@ -1,12 +1,11 @@
 package jpabook.jpashop.domain;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Account extends BaseEntity{
+public class Account {
 
     @Id @GeneratedValue
     @Column(name="ACCOUNT_ID")
@@ -21,6 +20,20 @@ public class Account extends BaseEntity{
     @OneToMany(mappedBy = "account")
     private List<Order> orders = new ArrayList<>();
 
+    @Embedded
+    private Period period;
+    @Embedded
+    private Address homeAddress;
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "city",
+                    column = @Column(name = "WORK_CITY")),
+            @AttributeOverride(name = "street",
+                    column = @Column(name = "WORK_STREET")),
+            @AttributeOverride(name = "zipcode",
+                    column = @Column(name = "WORK_ZIPCODE"))}
+    )
+    private Address workAddress;
 
 
     //연관관계 편의 메서드
@@ -52,4 +65,21 @@ public class Account extends BaseEntity{
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
+
 }

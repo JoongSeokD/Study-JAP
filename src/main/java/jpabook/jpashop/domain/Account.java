@@ -2,7 +2,9 @@ package jpabook.jpashop.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Account {
@@ -25,6 +27,20 @@ public class Account {
     @Embedded
     private Address homeAddress;
 
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns =
+        @JoinColumn(name = "ACCOUNT_ID")
+    )
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns =
+        @JoinColumn(name = "ACCOUNT_ID")
+    )
+    private List<Address> addressHistory = new ArrayList<>();
+
+
     @AttributeOverrides({
             @AttributeOverride(name = "city",
                     column = @Column(name = "WORK_CITY")),
@@ -34,6 +50,8 @@ public class Account {
                     column = @Column(name = "WORK_ZIPCODE"))}
     )
     private Address workAddress;
+
+
 
 
     //연관관계 편의 메서드
@@ -96,5 +114,21 @@ public class Account {
 
     public void setWorkAddress(Address workAddress) {
         this.workAddress = workAddress;
+    }
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+    public List<Address> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<Address> addressHistory) {
+        this.addressHistory = addressHistory;
     }
 }

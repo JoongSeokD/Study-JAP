@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -21,20 +22,41 @@ public class JpaMain {
 
         try {
 
-            Address address = new Address("city", "street", "10000");
             Account account = new Account();
             account.setUsername("account1");
-            account.setHomeAddress(address);
+            account.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+            account.getFavoriteFoods().add("치킨");
+            account.getFavoriteFoods().add("족발");
+            account.getFavoriteFoods().add("피자");
+
+            account.getAddressHistory().add(new Address("old1", "street", "10000"));
+            account.getAddressHistory().add(new Address("old2", "street", "10000"));
+
             em.persist(account);
 
-            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            em.flush();
+            em.clear();
 
-            Account account2 = new Account();
-            account2.setUsername("account2");
-            account2.setHomeAddress(copyAddress);
-            em.persist(account2);
+            System.out.println("================= START ================");
+            Account findAccount = em.find(Account.class, account.getId());
 
-//            account.getHomeAddress().setCity("newCity");
+            List<Address> addressHistory = findAccount.getAddressHistory();
+            for (Address address : addressHistory) {
+                System.out.println("address.getCity() = " + address.getCity());
+            }
+            Set<String> favoriteFoods = findAccount.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
+            // 치킨 -> 한식
+            findAccount.getFavoriteFoods().remove("치킨");
+            findAccount.getFavoriteFoods().add("한식");
+
+            findAccount.getAddressHistory().remove(new Address("old1", "street", "10000"));
+            findAccount.getAddressHistory().add(new Address("newCity", "street", "10000"));
+
 
             tx.commit();
         } catch (Exception e){

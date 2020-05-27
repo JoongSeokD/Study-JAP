@@ -11,7 +11,7 @@ public class Delivery extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private DeliveryStatus ststus;
 
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;
 
 

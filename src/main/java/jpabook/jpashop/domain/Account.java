@@ -19,6 +19,8 @@ public class Account {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    private int age;
+
     @OneToMany(mappedBy = "account")
     private List<Order> orders = new ArrayList<>();
 
@@ -130,5 +132,13 @@ public class Account {
 
     public void setAddressHistory(List<Address> addressHistory) {
         this.addressHistory = addressHistory;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

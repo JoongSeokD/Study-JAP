@@ -27,21 +27,23 @@ public class JpaMain {
             account.setUsername("관리자");
             account.setAge(10);
             account.changeTeam(team);
-
             em.persist(account);
+
+            Account account2 = new Account();
+            account2.setUsername("관리자2");
+            account2.setAge(10);
+            account2.changeTeam(team);
+
+            em.persist(account2);
 
             em.flush();
             em.clear();
 
-//            String query = "select " +
-//                    "        case when a.age <= 10 then '학생요금'" +
-//                    "             when a.age >= 60 then '경로요금'" +
-//                    "             else '일반요금' " +
-//                    "        end " +
-//                    "from Account a " ; // CASE
-
-//            String query = "select coalesce(a.username, '이름 없는 회원') from Account as a"; // 하나씩 조회해서 null아니면 반환
-            String query = "select NULLIF(a.username, '관리자') from Account as a"; // 두 값이 같으면 null 반환 다르면 첫번째 값 반환
+//            String query = "select concat( 'a',  'b') from Account as a";
+//            String query = "select substring( a.username, 2, 3) from Account as a";
+//            String query = "select locate('de', 'abcdefg') from Account as a";
+//            String query = "select size( t.accounts) from Team as t"; // JPA 용도
+            String query = "select group_concat (a.username) from Account as a";
 
             List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();

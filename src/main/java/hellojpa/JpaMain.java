@@ -19,25 +19,25 @@ public class JpaMain {
 
         try {
 
+            for (int i = 0; i < 100; i++) {
             Account account = new Account();
-            account.setUsername("account1");
-            account.setAge(10);
+            account.setUsername("account" + i);
+            account.setAge(i);
             em.persist(account);
+
+            }
 
             em.flush();
             em.clear();
 
-            List<Address> resultList = em.createQuery("select a.homeAddress from Account a ", Address.class)
+            List<Account> resultList = em.createQuery("select  a from Account a order by a.age desc", Account.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10)
                     .getResultList();
-
-            List<AccountDTO> resultList1 = em.createQuery("select new jpabook.jpashop.domain.AccountDTO( a.username, a.age) from Account a ", AccountDTO.class)
-                    .getResultList();
-
-            for (AccountDTO accountDTO : resultList1) {
-                System.out.println("accountDTO = " + accountDTO.getUsername());
-                System.out.println("accountDTO = " + accountDTO.getAge());
+            System.out.println("resultList.size() = " + resultList.size());
+            for (Account account1 : resultList) {
+                System.out.println("account1 = " + account1);
             }
-
 
             tx.commit();
         } catch (Exception e){

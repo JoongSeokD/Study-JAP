@@ -23,6 +23,9 @@ public class JpaMain {
             Team team = new Team();
             team.setName("teamA");
             em.persist(team);
+            Team team2 = new Team();
+            team2.setName("teamB");
+            em.persist(team2);
 
             Account account = new Account();
             account.setUsername("관리자");
@@ -32,24 +35,40 @@ public class JpaMain {
 
             Account account2 = new Account();
             account2.setUsername("관리자2");
-            account2.setAge(10);
+            account2.setAge(20);
             account2.changeTeam(team);
-
             em.persist(account2);
+
+            Account account3 = new Account();
+            account3.setUsername("관리자3");
+            account3.setAge(30);
+            account3.changeTeam(team2);
+            em.persist(account3);
 
             em.flush();
             em.clear();
 
-//            String query = "select a.username from Account a"; // 상태 필드 경로 탐생의 끝, 탐색 X
-//            String query = "select a.team from Account a"; // 단일 값 연관 경로 묵시적 내부 조인 발생, 탐색 O (실무에서 묵지적 내부조인이 발생하게 쿼리를 짜면 안된다. 직관적으로 튜닝하기 어려움)
-            String query = "select t.accounts from Team t";  // 컬렉션 값 연관 경로 묵시적 내부 조인 발생, 탐색 X
+            String query = "select a from Account a join fetch a.team";
 
-            Collection resultList = em.createQuery(query, Collection.class)
+            List<Account> resultList = em.createQuery(query, Account.class)
                     .getResultList();
-            for (Object o : resultList) {
-                System.out.println("o = " + o);
+            for (Account account1 : resultList) {
+                System.out.println("account = " + account1.getUsername());
+                System.out.println("account1 = " + account1.getTeam().getName());
             }
 
+
+            String query2 = "select distinct t from Team t join fetch t.accounts";
+
+            List<Team> resultList2 = em.createQuery(query2, Team.class)
+                    .getResultList();
+
+            for (Team team1 : resultList2) {
+                System.out.println("team1 = " + team1.getName() + " | " + team1.getAccounts().size());
+                for (Account account1 : team1.getAccounts()){
+                    System.out.println("account = " + account1);
+                }
+            }
 
             tx.commit();
         } catch (Exception e){

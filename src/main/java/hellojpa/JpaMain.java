@@ -45,37 +45,12 @@ public class JpaMain {
             account3.changeTeam(team2);
             em.persist(account3);
 
-            em.flush();
+            // flush 자동 호출
+            int count = em.createQuery("update Account a set a.age = 20")
+                    .executeUpdate();
+
+            // 벌크 연산 수행 후 영속성 컨텍스트를 초기화 해야함
             em.clear();
-
-            String query = "select a from Account a join fetch a.team";
-
-            List<Account> resultList = em.createQuery(query, Account.class)
-                    .getResultList();
-            for (Account account1 : resultList) {
-                System.out.println("account = " + account1.getUsername());
-                System.out.println("account1 = " + account1.getTeam().getName());
-                System.out.println("account1 = " + account1);
-            }
-
-
-            String query2 = "select distinct t from Team t join fetch t.accounts";
-
-            List<Team> resultList2 = em.createQuery(query2, Team.class)
-                    .getResultList();
-
-            for (Team team1 : resultList2) {
-                System.out.println("team1 = " + team1.getName() + " | " + team1.getAccounts().size());
-                for (Account account1 : team1.getAccounts()){
-                    System.out.println("account = " + account1);
-                }
-            }
-
-            List<Account> username = em.createNamedQuery("Account.findByUsername", Account.class)
-                    .setParameter("username", account.getUsername()).getResultList();
-            for (Account account1 : username) {
-                System.out.println("account1 = " + account1);
-            }
 
             tx.commit();
         } catch (Exception e){

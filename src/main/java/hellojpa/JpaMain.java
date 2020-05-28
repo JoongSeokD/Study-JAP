@@ -30,23 +30,15 @@ public class JpaMain {
 
             em.persist(account);
 
-
-
             em.flush();
             em.clear();
 
-//            String query = "select  a from Account a left join a.team t "; 레프트 조인
-//            String query = "select  a from Account a join a.team t "; 이너 조인
-
-//            String query = "select  a from Account a, Team t where a.username = t.name "; // 세타 조인
-            String query = "select  a from Account a left join Team t on t.name = a.username"; // 연관관계 없는 외부 조인
-            List<Account> resultList = em.createQuery(query, Account.class)
-
+            String query = "select a.username, 'HELLO', TRUE from Account a " +
+                    "where a.type = :userType";
+            em.createQuery(query)
+                    .setParameter("userType", AccountType.USER)
                     .getResultList();
-            System.out.println("resultList.size() = " + resultList.size());
-            for (Account account1 : resultList) {
-                System.out.println("account1 = " + account1);
-            }
+
 
             tx.commit();
         } catch (Exception e){

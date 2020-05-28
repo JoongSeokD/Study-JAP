@@ -71,6 +71,12 @@ public class JpaMain {
                 }
             }
 
+            List<Account> username = em.createNamedQuery("Account.findByUsername", Account.class)
+                    .setParameter("username", account.getUsername()).getResultList();
+            for (Account account1 : username) {
+                System.out.println("account1 = " + account1);
+            }
+
             tx.commit();
         } catch (Exception e){
             tx.rollback();

@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@NamedQuery(
+        name = "Account.findByUsername",
+        query = "select a from Account a where a.username =:username"
+)
 public class Account {
 
     @Id @GeneratedValue

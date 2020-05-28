@@ -1,13 +1,13 @@
 package hellojpa;
 
-import jpabook.jpashop.domain.*;
-import org.hibernate.Hibernate;
+import jpabook.jpashop.domain.Account;
+import jpabook.jpashop.domain.Team;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Collection;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
-import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -55,6 +55,7 @@ public class JpaMain {
             for (Account account1 : resultList) {
                 System.out.println("account = " + account1.getUsername());
                 System.out.println("account1 = " + account1.getTeam().getName());
+                System.out.println("account1 = " + account1);
             }
 
 

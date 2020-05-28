@@ -21,7 +21,7 @@ public class Account {
 
     private int age;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private AccountType type;
 
     @OneToMany(mappedBy = "account")

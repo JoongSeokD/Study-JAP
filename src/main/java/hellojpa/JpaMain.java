@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -39,16 +40,14 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-//            String query = "select concat( 'a',  'b') from Account as a";
-//            String query = "select substring( a.username, 2, 3) from Account as a";
-//            String query = "select locate('de', 'abcdefg') from Account as a";
-//            String query = "select size( t.accounts) from Team as t"; // JPA 용도
-            String query = "select group_concat (a.username) from Account as a";
+//            String query = "select a.username from Account a"; // 상태 필드 경로 탐생의 끝, 탐색 X
+//            String query = "select a.team from Account a"; // 단일 값 연관 경로 묵시적 내부 조인 발생, 탐색 O (실무에서 묵지적 내부조인이 발생하게 쿼리를 짜면 안된다. 직관적으로 튜닝하기 어려움)
+            String query = "select t.accounts from Team t";  // 컬렉션 값 연관 경로 묵시적 내부 조인 발생, 탐색 X
 
-            List<String> resultList = em.createQuery(query, String.class)
+            Collection resultList = em.createQuery(query, Collection.class)
                     .getResultList();
-            for (String s : resultList) {
-                System.out.println("s = " + s);
+            for (Object o : resultList) {
+                System.out.println("o = " + o);
             }
 
 

@@ -24,8 +24,8 @@ public class JpaMain {
             em.persist(team);
 
             Account account = new Account();
+            account.setUsername("관리자");
             account.setAge(10);
-            account.setUsername("teamA");
             account.changeTeam(team);
 
             em.persist(account);
@@ -33,11 +33,21 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select a.username, 'HELLO', TRUE from Account a " +
-                    "where a.type = :userType";
-            em.createQuery(query)
-                    .setParameter("userType", AccountType.USER)
+//            String query = "select " +
+//                    "        case when a.age <= 10 then '학생요금'" +
+//                    "             when a.age >= 60 then '경로요금'" +
+//                    "             else '일반요금' " +
+//                    "        end " +
+//                    "from Account a " ; // CASE
+
+//            String query = "select coalesce(a.username, '이름 없는 회원') from Account as a"; // 하나씩 조회해서 null아니면 반환
+            String query = "select NULLIF(a.username, '관리자') from Account as a"; // 두 값이 같으면 null 반환 다르면 첫번째 값 반환
+
+            List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
+            for (String s : resultList) {
+                System.out.println("s = " + s);
+            }
 
 
             tx.commit();

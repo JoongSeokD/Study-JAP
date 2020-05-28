@@ -19,20 +19,29 @@ public class JpaMain {
 
         try {
 
-            for (int i = 0; i < 100; i++) {
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
             Account account = new Account();
-            account.setUsername("account" + i);
-            account.setAge(i);
+            account.setAge(10);
+            account.setUsername("teamA");
+            account.changeTeam(team);
+
             em.persist(account);
 
-            }
+
 
             em.flush();
             em.clear();
 
-            List<Account> resultList = em.createQuery("select  a from Account a order by a.age desc", Account.class)
-                    .setFirstResult(1)
-                    .setMaxResults(10)
+//            String query = "select  a from Account a left join a.team t "; 레프트 조인
+//            String query = "select  a from Account a join a.team t "; 이너 조인
+
+//            String query = "select  a from Account a, Team t where a.username = t.name "; // 세타 조인
+            String query = "select  a from Account a left join Team t on t.name = a.username"; // 연관관계 없는 외부 조인
+            List<Account> resultList = em.createQuery(query, Account.class)
+
                     .getResultList();
             System.out.println("resultList.size() = " + resultList.size());
             for (Account account1 : resultList) {

@@ -23,15 +23,20 @@ public class JpaMain {
             account.setUsername("account1");
             account.setAge(10);
             em.persist(account);
-            // 반환 타입이 명확할 때
-            TypedQuery<Account> query1 = em.createQuery("select a from Account a ", Account.class);
-            Account singleResult = em.createQuery("select a from Account a  where a.username = :username", Account.class)
-                    .setParameter("username", "account1")
-                    .getSingleResult();
-            List<Account> resultList = query1.getResultList();
-            TypedQuery<String> query2 = em.createQuery("select a.username from Account a ", String.class);
-            // 반환 타입이 명확하지 않을 때
-            Query query3 = em.createQuery("select a.username, a.age from Account a ");
+
+            em.flush();
+            em.clear();
+
+            List<Address> resultList = em.createQuery("select a.homeAddress from Account a ", Address.class)
+                    .getResultList();
+
+            List<AccountDTO> resultList1 = em.createQuery("select new jpabook.jpashop.domain.AccountDTO( a.username, a.age) from Account a ", AccountDTO.class)
+                    .getResultList();
+
+            for (AccountDTO accountDTO : resultList1) {
+                System.out.println("accountDTO = " + accountDTO.getUsername());
+                System.out.println("accountDTO = " + accountDTO.getAge());
+            }
 
 
             tx.commit();
